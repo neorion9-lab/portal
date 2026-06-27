@@ -309,9 +309,24 @@ const dom = {
   btnSimComplete: document.getElementById("btn-sim-complete"),
   btnCloseIframe: document.getElementById("btn-close-iframe"),
 
+  // Policy Modal
+  linkTos: document.getElementById("link-tos"),
+  linkPrivacy: document.getElementById("link-privacy"),
+  policyModal: document.getElementById("policy-modal"),
+  policyModalTitle: document.getElementById("policy-modal-title"),
+  policyModalContent: document.getElementById("policy-modal-content"),
+  btnClosePolicy: document.getElementById("btn-close-policy"),
+  btnClosePolicyBottom: document.getElementById("btn-close-policy-bottom"),
+  tplTerms: document.getElementById("tpl-terms"),
+  tplPrivacy: document.getElementById("tpl-privacy"),
+
   toastContainer: document.getElementById("toast-container"),
   notiBadge: document.getElementById("noti-badge"),
-  notificationTrigger: document.getElementById("notification-trigger")
+  notificationTrigger: document.getElementById("notification-trigger"),
+
+  // Ethics Gate
+  ethicsGate: document.getElementById("ethics-gate"),
+  btnAgreeEthics: document.getElementById("btn-agree-ethics")
 };
 
 // ==================== CORE INITIALIZATION ====================
@@ -370,6 +385,32 @@ function init() {
   dom.btnRunApp.addEventListener("click", runSimulatorApp);
   dom.btnCloseIframe.addEventListener("click", () => dom.iframeModal.classList.remove("open"));
   dom.btnSimComplete.addEventListener("click", handleSimulatedSuccess);
+
+  // Policy Modal Events
+  dom.linkTos.addEventListener("click", (e) => {
+    e.preventDefault();
+    openPolicyModal("서비스 이용약관", dom.tplTerms);
+  });
+  dom.linkPrivacy.addEventListener("click", (e) => {
+    e.preventDefault();
+    openPolicyModal("개인정보처리방침", dom.tplPrivacy);
+  });
+  [dom.btnClosePolicy, dom.btnClosePolicyBottom].forEach(el => {
+    el.addEventListener("click", closePolicyModal);
+  });
+  // Close modal on backdrop click
+  window.addEventListener("click", (e) => {
+    if (e.target === dom.policyModal) closePolicyModal();
+    if (e.target === dom.appPreviewModal) closeModal();
+  });
+
+  // Ethics Gate logic
+  if (dom.btnAgreeEthics) {
+    dom.btnAgreeEthics.addEventListener("click", () => {
+      dom.ethicsGate.classList.add("hidden");
+      showToast("윤리 가이드 확인을 마쳤습니다. 훌륭해요구마이! 🌻");
+    });
+  }
 
   // Lesson Plan form
   dom.btnAddLesson.addEventListener("click", () => dom.addLessonModal.classList.add("open"));
@@ -614,6 +655,16 @@ function openAppPreview(app) {
 function closeModal() {
   dom.appPreviewModal.classList.remove("open");
   selectedAppForModal = null;
+}
+
+function openPolicyModal(title, templateEl) {
+  dom.policyModalTitle.textContent = title;
+  dom.policyModalContent.innerHTML = templateEl.innerHTML;
+  dom.policyModal.classList.add("open");
+}
+
+function closePolicyModal() {
+  dom.policyModal.classList.remove("open");
 }
 
 function handleModalMapLink() {

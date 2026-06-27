@@ -492,18 +492,18 @@ function applyRoleUI(role) {
   if (role === "teacher") {
     dom.userDisplayName.textContent = "신짱구 선생님 🌻";
     dom.userDisplayRole.textContent = "교실 관리자 (떡잎유치원)";
-    dom.welcomeTitle.textContent = "어서와요! 짱구 선생님 🌻";
-    dom.welcomeSubtitle.textContent = "오늘도 아이들과 함께 신나는 수업 계획을 매핑해 보아요!";
+    if (dom.welcomeTitle) dom.welcomeTitle.textContent = "어서와요! 짱구 선생님 🌻";
+    if (dom.welcomeSubtitle) dom.welcomeSubtitle.textContent = "오늘도 아이들과 함께 신나는 수업 계획을 매핑해 보아요!";
   } else if (role === "parent") {
     dom.userDisplayName.textContent = "봉미선 학부모님 🏠";
     dom.userDisplayRole.textContent = "학부모 (읽기 전용)";
-    dom.welcomeTitle.textContent = "반갑습니다! 학부모님 🏠";
-    dom.welcomeSubtitle.textContent = "자녀의 학급 수업 진도와 개인 맞춤 추천 교육 앱 목록을 열람할 수 있습니다.";
+    if (dom.welcomeTitle) dom.welcomeTitle.textContent = "반갑습니다! 학부모님 🏠";
+    if (dom.welcomeSubtitle) dom.welcomeSubtitle.textContent = "자녀의 학급 수업 진도와 개인 맞춤 추천 교육 앱 목록을 열람할 수 있습니다.";
   } else if (role === "student") {
     dom.userDisplayName.textContent = "신짱구 어린이 🎒";
     dom.userDisplayRole.textContent = "떡잎유치원 해바라기반";
-    dom.welcomeTitle.textContent = "안녕! 짱구야! 🎒";
-    dom.welcomeSubtitle.textContent = "선생님이 추천해 준 재미있는 교육용 앱을 실행해 봐요! 울라울라~";
+    if (dom.welcomeTitle) dom.welcomeTitle.textContent = "안녕! 짱구야! 🎒";
+    if (dom.welcomeSubtitle) dom.welcomeSubtitle.textContent = "선생님이 추천해 준 재미있는 교육용 앱을 실행해 봐요! 울라울라~";
   }
 
   // Adjust side navigation items

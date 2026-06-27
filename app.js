@@ -270,6 +270,7 @@ const dom = {
   filteredAppsCount: document.getElementById("filtered-apps-count"),
   currentCategoryTitle: document.getElementById("current-category-title"),
   todayPlanCount: document.getElementById("today-plan-count"),
+  navAdmin: document.getElementById("nav-admin"),
   
   // Kanban
   kanbanMiniApps: document.getElementById("kanban-mini-apps"),

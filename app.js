@@ -405,9 +405,11 @@ function init() {
   });
 
   // Ethics Gate logic
-  if (dom.btnAgreeEthics) {
-    dom.btnAgreeEthics.addEventListener("click", () => {
-      dom.ethicsGate.classList.add("hidden");
+  const gateEl = document.getElementById("ethics-gate");
+  const btnAgree = document.getElementById("btn-agree-ethics");
+  if (btnAgree && gateEl) {
+    btnAgree.addEventListener("click", () => {
+      gateEl.style.display = "none";
       showToast("윤리 가이드 확인을 마쳤습니다. 훌륭해요구마이! 🌻");
     });
   }

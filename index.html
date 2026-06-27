@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>울라울라 교실 맞춤형 대시보드 포털 🌟</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="role-teacher"> <!-- Default Role: Teacher -->
+
+  <!-- App Wrapper -->
+  <div class="app-container">
+    
+    <!-- Left Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="brand-text">
+          <h2>맞춤형 대시보드</h2>
+          <span class="sub-brand">Class Portal</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-menu">
+        <a href="#" class="menu-item active" data-tab="home">
+          <i class="fa-solid fa-house"></i>
+          <span>홈 / 앱 런처</span>
+        </a>
+        <a href="#" class="menu-item" data-tab="plan" id="nav-plan">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>수업 계획 (칸반)</span>
+        </a>
+        <a href="#" class="menu-item" data-tab="students" id="nav-students">
+          <i class="fa-solid fa-users"></i>
+          <span>학생 추천 현황</span>
+        </a>
+        <a href="#" class="menu-item" data-tab="assignments" id="nav-assignments">
+          <i class="fa-solid fa-list-check"></i>
+          <span>과제 연동 관리</span>
+        </a>
+        <a href="#" class="menu-item teacher-only" data-tab="admin" id="nav-admin">
+          <i class="fa-solid fa-folder-plus"></i>
+          <span>관리자 등록 (Ingest)</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="shin-character">
+          <img src="https://i.imgur.com/vHqJqF5.png" alt="짱구" class="shin-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=shin'">
+          <div class="shin-quote">
+            <p>"울라울라~ 오늘도 코딩이다구마이!"</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Section -->
+    <main class="main-wrapper">
+      
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="global-search" placeholder="검색하고 싶은 앱을 입력해봐요...">
+          </div>
+        </div>
+        
+        <div class="header-right">
+          <!-- Role Switching (Teacher / Parent / Student) -->
+          <div class="role-selector-wrapper">
+            <label for="role-select"><i class="fa-solid fa-user-shield"></i> 역할 전환:</label>
+            <select id="role-select" class="role-select">
+              <option value="teacher" selected>교사 (전체 권한)</option>
+              <option value="parent">학부모 (읽기 전용)</option>
+              <option value="student">학생 (개인화 뷰)</option>
+            </select>
+          </div>
+
+          <div class="notification-bell" id="notification-trigger">
+            <i class="fa-solid fa-bell"></i>
+            <span class="badge" id="noti-badge">3</span>
+          </div>
+
+          <div class="profile-chip">
+            <div class="profile-info">
+              <span class="profile-name" id="user-display-name">신짱구 선생님</span>
+              <span class="profile-role" id="user-display-role">유치원 교사</span>
+            </div>
+            <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Shinchan" alt="프로필" class="profile-avatar">
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Contents Rendered dynamically based on tab -->
+      <div class="content-container">
+        
+        <!-- ==================== HOME / LAUNCHER TAB ==================== -->
+        <section id="tab-home" class="tab-content active">
+          <!-- Top Hero / Welcome Banner -->
+          <div class="welcome-banner">
+            <div class="banner-text">
+              <h1 id="welcome-title">어서와요! 짱구 선생님 🌻</h1>
+              <p id="welcome-subtitle">오늘도 아이들과 함께 신나게 놀고 배울 준비가 되었나요? 마음에 드는 앱을 선택해 보세요!</p>
+            </div>
+            <div class="banner-meta">
+              <div class="meta-item">
+                <span class="meta-label">오늘의 수업 계획</span>
+                <span class="meta-value" id="today-plan-count">3개 매핑 완료</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">학급 등록 학생수</span>
+                <span class="meta-value">5명 (떡잎방범대)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Filters & Stats Row -->
+          <div class="filters-row">
+            <div class="filter-group">
+              <button class="filter-btn active" data-filter="all">전체</button>
+              <button class="filter-btn" data-filter="1,2">1-2학년</button>
+              <button class="filter-btn" data-filter="3,4">3-4학년</button>
+              <button class="filter-btn" data-filter="5,6">5-6학년</button>
+            </div>
+
+            <div class="subject-select-wrapper">
+              <select id="subject-filter" class="custom-select">
+                <option value="all">모든 과목</option>
+                <option value="수학">수학</option>
+                <option value="과학">과학</option>
+                <option value="영어">영어</option>
+                <option value="국어">국어</option>
+                <option value="정보">정보</option>
+                <option value="예체능">예체능</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Categories & Launcher LauncherGrid -->
+          <div class="launcher-section">
+            <!-- Category Navigation -->
+            <div class="category-nav-wrapper">
+              <div class="category-nav" id="category-nav-bar">
+                <!-- JavaScript will populate categories here -->
+              </div>
+            </div>
+
+            <!-- App Launcher Grid -->
+            <div class="launcher-grid-header">
+              <h3 id="current-category-title"><i class="fa-solid fa-cubes"></i> 전체 카테고리 앱</h3>
+              <span class="app-count" id="filtered-apps-count">8개의 앱이 있습니다.</span>
+            </div>
+            <div class="launcher-grid" id="apps-launcher-grid">
+              <!-- Cards will be populated by JavaScript -->
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== LESSON PLAN (KANBAN) TAB ==================== -->
+        <section id="tab-plan" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h2>수업계획 & 앱 매핑 보드 🗺️</h2>
+              <p>단원과 수업 목표에 맞게 필요한 교육 앱을 끌어다 놓아 매핑해 보세요!</p>
+            </div>
+            <div class="teacher-only">
+              <button class="action-btn" id="btn-add-lesson"><i class="fa-solid fa-plus"></i> 새 수업 계획 추가</button>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Workspace -->
+          <div class="kanban-workspace">
+            <!-- Left Side: App Mini Library (Source) -->
+            <div class="kanban-source-panel">
+              <h3><i class="fa-solid fa-box-open"></i> 앱 라이브러리 (끌어다 놓으세요)</h3>
+              <p class="panel-desc">앱 카드를 마우스로 드래그해서 오른쪽 수업 계획 카드 내부의 매핑 박스로 드롭하세요.</p>
+              <div class="mini-app-list" id="kanban-mini-apps">
+                <!-- populated by JS -->
+              </div>
+            </div>
+
+            <!-- Right Side: Kanban Columns -->
+            <div class="kanban-board">
+              <!-- Column: 대기 (Backlog) -->
+              <div class="kanban-column" data-status="backlog">
+                <div class="column-header">
+                  <span class="column-title"><span class="dot status-backlog"></span>대기 중인 수업</span>
+                  <span class="column-count" id="count-backlog">0</span>
+                </div>
+                <div class="kanban-cards-container" id="col-backlog">
+                  <!-- cards populated by JS -->
+                </div>
+              </div>
+
+              <!-- Column: 매핑중 (Mapping) -->
+              <div class="kanban-column" data-status="mapping_in_progress">
+                <div class="column-header">
+                  <span class="column-title"><span class="dot status-progress"></span>매핑 진행 중</span>
+                  <span class="column-count" id="count-mapping_in_progress">0</span>
+                </div>
+                <div class="kanban-cards-container" id="col-mapping_in_progress">
+                  <!-- cards populated by JS -->
+                </div>
+              </div>
+
+              <!-- Column: 매핑완료 (Mapped) -->
+              <div class="kanban-column" data-status="mapped">
+                <div class="column-header">
+                  <span class="column-title"><span class="dot status-mapped"></span>매핑 완료</span>
+                  <span class="column-count" id="count-mapped">0</span>
+                </div>
+                <div class="kanban-cards-container" id="col-mapped">
+                  <!-- cards populated by JS -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- ==================== STUDENTS RECOMMENDED TAB ==================== -->
+        <section id="tab-students" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h2>학생 맞춤 추천 & 진도율 현황 📈</h2>
+              <p>각 학생들의 진도 상태와 학습 격차를 분석하고 개인 맞춤 앱을 추천해 줍니다.</p>
+            </div>
+          </div>
+
+          <div class="student-grid" id="students-panel-grid">
+            <!-- Populated by JS -->
+          </div>
+        </section>
+
+
+        <!-- ==================== ASSIGNMENTS TAB ==================== -->
+        <section id="tab-assignments" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h2>과제 연동 트래커 📝</h2>
+              <p>교육 앱을 필수 요구사항으로 연계하고, 실시간 제출 상태와 피드백 폼을 관리합니다.</p>
+            </div>
+            <div class="teacher-only">
+              <button class="action-btn" id="btn-add-assignment"><i class="fa-solid fa-plus"></i> 새 과제 등록</button>
+            </div>
+          </div>
+
+          <div class="assignment-list-wrapper">
+            <table class="assignment-table">
+              <thead>
+                <tr>
+                  <th>과제명</th>
+                  <th>마감일</th>
+                  <th>연계된 앱</th>
+                  <th>진행 상태</th>
+                  <th>피드백 루프</th>
+                  <th class="teacher-only">작업</th>
+                </tr>
+              </thead>
+              <tbody id="assignments-tbody">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+
+        <!-- ==================== ADMIN INGESTION TAB ==================== -->
+        <section id="tab-admin" class="tab-content">
+          <div class="section-header">
+            <div>
+              <h2>관리자용 신규 교육 앱 등록 🆕</h2>
+              <p>대시보드 포털의 앱 카탈로그를 확장하기 위한 앱 등록 정보 입력 양식입니다.</p>
+            </div>
+          </div>
+
+          <div class="admin-form-container">
+            <form id="app-ingest-form" class="ingest-form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="ingest-title"><i class="fa-solid fa-signature"></i> 앱 타이틀 <span class="required">*</span></label>
+                  <input type="text" id="ingest-title" required placeholder="예: 구구단 초능력 격파">
+                </div>
+
+                <div class="form-group">
+                  <label for="ingest-category"><i class="fa-solid fa-layer-group"></i> 카테고리 <span class="required">*</span></label>
+                  <select id="ingest-category" required>
+                    <option value="cat_math">수학</option>
+                    <option value="cat_science">과학</option>
+                    <option value="cat_english">영어</option>
+                    <option value="cat_coding">코딩</option>
+                    <option value="cat_art">미술</option>
+                    <option value="cat_music">음악</option>
+                    <option value="cat_history">사회/역사</option>
+                    <option value="cat_korean">국어</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="ingest-subject"><i class="fa-solid fa-book"></i> 과목 <span class="required">*</span></label>
+                  <input type="text" id="ingest-subject" required placeholder="예: 수학, 과학, 정보 등">
+                </div>
+
+                <div class="form-group">
+                  <label for="ingest-duration"><i class="fa-solid fa-hourglass-half"></i> 권장 소요시간 <span class="required">*</span></label>
+                  <input type="text" id="ingest-duration" required placeholder="예: 15-20분">
+                </div>
+
+                <div class="form-group full-width">
+                  <label><i class="fa-solid fa-graduation-cap"></i> 추천 학년 (다중 선택)</label>
+                  <div class="checkbox-group">
+                    <label class="check-container">1학년 <input type="checkbox" name="ingest-grades" value="1" checked><span class="checkmark"></span></label>
+                    <label class="check-container">2학년 <input type="checkbox" name="ingest-grades" value="2" checked><span class="checkmark"></span></label>
+                    <label class="check-container">3학년 <input type="checkbox" name="ingest-grades" value="3"><span class="checkmark"></span></label>
+                    <label class="check-container">4학년 <input type="checkbox" name="ingest-grades" value="4"><span class="checkmark"></span></label>
+                    <label class="check-container">5학년 <input type="checkbox" name="ingest-grades" value="5"><span class="checkmark"></span></label>
+                    <label class="check-container">6학년 <input type="checkbox" name="ingest-grades" value="6"><span class="checkmark"></span></label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="ingest-thumbnail"><i class="fa-solid fa-image"></i> 대표 썸네일 URL</label>
+                  <input type="url" id="ingest-thumbnail" placeholder="https://example.com/image.png (비워두면 기본 이미지 적용)">
+                </div>
+
+                <div class="form-group">
+                  <label for="ingest-tags"><i class="fa-solid fa-tags"></i> 태그 <span class="required">*</span></label>
+                  <input type="text" id="ingest-tags" required placeholder="쉼표(,)로 구분. 예: 구구단, 연산, 기초">
+                </div>
+
+                <div class="form-group full-width">
+                  <label for="ingest-description"><i class="fa-solid fa-align-left"></i> 앱 상세 설명 <span class="required">*</span></label>
+                  <textarea id="ingest-description" rows="4" required placeholder="이 앱이 학생들과 수업에 어떻게 활용될 수 있는지 적어주세요."></textarea>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="reset" class="reset-btn">초기화</button>
+                <button type="submit" class="submit-btn"><i class="fa-solid fa-check"></i> 카탈로그에 신규 앱 등록</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== APP PREVIEW MODAL ==================== -->
+  <div class="modal-backdrop" id="app-preview-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="modal-app-title">앱 상세보기</h3>
+        <button class="close-btn" id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-layout">
+          <div class="modal-image-side">
+            <img src="" alt="앱 썸네일" id="modal-app-thumbnail" class="modal-thumbnail">
+            <div class="modal-badge-group">
+              <span class="modal-badge" id="modal-app-subject">과목</span>
+              <span class="modal-badge secondary" id="modal-app-duration">소요시간</span>
+            </div>
+          </div>
+          <div class="modal-info-side">
+            <div class="modal-grades" id="modal-app-grades">추천 학년: -</div>
+            <p class="modal-desc" id="modal-app-desc">앱 상세 설명...</p>
+            <div class="modal-tags" id="modal-app-tags">
+              <!-- tags dynamic -->
+            </div>
+            
+            <div class="modal-interaction">
+              <div class="teacher-only map-section">
+                <label for="modal-map-select"><i class="fa-solid fa-link"></i> 이 수업 계획에 매핑하기:</label>
+                <div class="map-controls">
+                  <select id="modal-map-select">
+                    <!-- populated dynamically -->
+                  </select>
+                  <button class="action-btn font-sm" id="btn-modal-map">매핑 적용</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btn-close-modal-bottom">닫기</button>
+        <button class="btn-primary" id="btn-run-app"><i class="fa-solid fa-play"></i> 앱 실행하기 (iFrame/새창)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== ADD LESSON MODAL ==================== -->
+  <div class="modal-backdrop" id="add-lesson-modal">
+    <div class="modal-container max-w-sm">
+      <div class="modal-header">
+        <h3>새 수업 계획 추가 📅</h3>
+        <button class="close-btn" onclick="document.getElementById('add-lesson-modal').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="add-lesson-form">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="lesson-title">수업 단원명 *</label>
+            <input type="text" id="lesson-title" required placeholder="예: 단원 4: 사각형의 넓이 구하기">
+          </div>
+          <div class="form-group">
+            <label for="lesson-topic">수업 소주제 *</label>
+            <input type="text" id="lesson-topic" required placeholder="예: 직사각형과 정사각형">
+          </div>
+          <div class="form-group">
+            <label for="lesson-target">학습 목표 *</label>
+            <input type="text" id="lesson-target" required placeholder="예: 직사각형 면적 공식 이해">
+          </div>
+          <div class="form-group">
+            <label for="lesson-duration">수업 시간 *</label>
+            <input type="text" id="lesson-duration" required placeholder="예: 40분">
+          </div>
+          <div class="form-group">
+            <label for="lesson-materials">수업 준비물</label>
+            <input type="text" id="lesson-materials" placeholder="예: 자, 연습장">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="document.getElementById('add-lesson-modal').classList.remove('open')">취소</button>
+          <button type="submit" class="btn-primary">계획 추가</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION CONTAINER ==================== -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Embedded Iframe Simulation Modal -->
+  <div class="modal-backdrop" id="iframe-modal">
+    <div class="modal-container max-w-lg iframe-container-modal">
+      <div class="modal-header">
+        <h3 id="iframe-title">앱 실행 시뮬레이터</h3>
+        <button class="close-btn" id="btn-close-iframe"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="iframe-placeholder">
+          <div class="simulation-screen">
+            <i class="fa-solid fa-gamepad icon-pulse"></i>
+            <h2 id="iframe-sim-app-name">실행 중...</h2>
+            <p>교육용 앱이 가상 샌드박스에서 안정적으로 동작하고 있습니다.</p>
+            <div class="simulation-controls">
+              <button class="btn-accent" id="btn-sim-complete"><i class="fa-solid fa-circle-check"></i> 학습 완료 시뮬레이션</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

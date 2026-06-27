@@ -394,7 +394,7 @@ function init() {
 
   // Modal control triggers
   [dom.btnCloseModal, dom.btnCloseModalBottom].forEach(el => {
-    el.addEventListener("click", closeModal);
+    if (el) el.addEventListener("click", closeModal);
   });
   
   dom.btnModalMap.addEventListener("click", handleModalMapLink);
@@ -412,7 +412,7 @@ function init() {
     openPolicyModal("개인정보처리방침", dom.tplPrivacy);
   });
   [dom.btnClosePolicy, dom.btnClosePolicyBottom].forEach(el => {
-    el.addEventListener("click", closePolicyModal);
+    if (el) el.addEventListener("click", closePolicyModal);
   });
   // Close modal on backdrop click
   window.addEventListener("click", (e) => {

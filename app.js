@@ -1,21 +1,16 @@
 // Initial Mock Data Database
 const DEFAULT_CATEGORIES = [
-  { id: "all", name: "✨ 전체" },
-  { id: "cat_math", name: "📐 수학" },
-  { id: "cat_science", name: "🧪 과학" },
-  { id: "cat_english", name: "🔤 영어" },
-  { id: "cat_coding", name: "💻 코딩/정보" },
-  { id: "cat_art", name: "🎨 미술" },
-  { id: "cat_music", name: "🎵 음악" },
-  { id: "cat_history", name: "📜 사회/역사" },
-  { id: "cat_korean", name: "📖 국어" }
+  { id: "all", name: "🗂️ 전체" },
+  { id: "cat_subject", name: "🧩 교과" },
+  { id: "cat_management", name: "📋 학급운영" },
+  { id: "cat_extra", name: "🎨 창체" }
 ];
 
 const DEFAULT_APPS = [
   {
     id: "app_math_frac",
     title: "분수의 덧셈 마스터",
-    categoryId: "cat_math",
+    categoryId: "cat_subject",
     subject: "수학",
     gradeLevels: ["1", "2", "3"],
     duration: "10-15분",
@@ -27,7 +22,7 @@ const DEFAULT_APPS = [
   {
     id: "app_sci_solar",
     title: "우주 대탐험 3D",
-    categoryId: "cat_science",
+    categoryId: "cat_subject",
     subject: "과학",
     gradeLevels: ["3", "4", "5"],
     duration: "20-30분",
@@ -39,7 +34,7 @@ const DEFAULT_APPS = [
   {
     id: "app_eng_vocab",
     title: "영어 단어 팡팡 퍼즐",
-    categoryId: "cat_english",
+    categoryId: "cat_subject",
     subject: "영어",
     gradeLevels: ["1", "2"],
     duration: "5-10분",
@@ -51,7 +46,7 @@ const DEFAULT_APPS = [
   {
     id: "app_coding_block",
     title: "액션가면 블록코딩",
-    categoryId: "cat_coding",
+    categoryId: "cat_extra",
     subject: "정보",
     gradeLevels: ["4", "5", "6"],
     duration: "15-20분",
@@ -63,7 +58,7 @@ const DEFAULT_APPS = [
   {
     id: "app_art_draw",
     title: "꼬마 화가의 디지털 캔버스",
-    categoryId: "cat_art",
+    categoryId: "cat_extra",
     subject: "미술",
     gradeLevels: ["1", "2", "3", "4", "5", "6"],
     duration: "20-30분",
@@ -75,7 +70,7 @@ const DEFAULT_APPS = [
   {
     id: "app_music_piano",
     title: "화면속의 오케스트라",
-    categoryId: "cat_music",
+    categoryId: "cat_extra",
     subject: "음악",
     gradeLevels: ["1", "2", "3"],
     duration: "10-15분",
@@ -87,7 +82,7 @@ const DEFAULT_APPS = [
   {
     id: "app_history_time",
     title: "조선시대 타임레이서",
-    categoryId: "cat_history",
+    categoryId: "cat_subject",
     subject: "사회/역사",
     gradeLevels: ["5", "6"],
     duration: "20-25분",
@@ -99,7 +94,7 @@ const DEFAULT_APPS = [
   {
     id: "app_kor_read",
     title: "문해력 쑥쑥 독서 퀴즈",
-    categoryId: "cat_korean",
+    categoryId: "cat_subject",
     subject: "국어",
     gradeLevels: ["1", "2", "3"],
     duration: "10-15분",
@@ -215,6 +210,17 @@ const DEFAULT_ASSIGNMENTS = [
 class AppStore {
   constructor() {
     this.apps = this.load("potal_apps", DEFAULT_APPS);
+    
+    // Migration for old categories
+    this.apps.forEach(app => {
+      if (["cat_math", "cat_science", "cat_english", "cat_korean", "cat_history"].includes(app.categoryId)) {
+        app.categoryId = "cat_subject";
+      } else if (["cat_coding", "cat_art", "cat_music"].includes(app.categoryId)) {
+        app.categoryId = "cat_extra";
+      }
+    });
+    this.save("potal_apps", this.apps);
+
     this.categories = DEFAULT_CATEGORIES; // Static categories for MVP
     this.lessons = this.load("potal_lessons", DEFAULT_LESSONS);
     this.students = this.load("potal_students", DEFAULT_STUDENTS);
@@ -360,7 +366,7 @@ function init() {
     renderLauncher();
   });
 
-  // Grade Filter Buttons
+  // Grade Filter Buttons (if any exist)
   document.querySelectorAll(".filter-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
@@ -370,11 +376,21 @@ function init() {
     });
   });
 
-  // Subject Filter dropdown
-  document.getElementById("subject-filter").addEventListener("change", (e) => {
-    currentSubjectFilter = e.target.value;
-    renderLauncher();
-  });
+  const subjFilter = document.getElementById("subject-filter");
+  if (subjFilter) {
+    subjFilter.addEventListener("change", (e) => {
+      currentSubjectFilter = e.target.value;
+      renderLauncher();
+    });
+  }
+
+  const btnAddApp = document.getElementById("btn-fab-add-app");
+  if (btnAddApp) {
+    btnAddApp.addEventListener("click", () => {
+      switchTab("admin");
+      showToast("새로운 앱을 등록해보아요! 🌻");
+    });
+  }
 
   // Modal control triggers
   [dom.btnCloseModal, dom.btnCloseModalBottom].forEach(el => {
@@ -561,10 +577,8 @@ function renderLauncher() {
     return true;
   });
 
-  dom.filteredAppsCount.textContent = `조건에 맞는 ${filtered.length}개의 앱이 있습니다.`;
-  
-  const currentCatObj = store.categories.find(c => c.id === currentCategory);
-  dom.currentCategoryTitle.innerHTML = `<i class="fa-solid fa-cubes"></i> ${currentCatObj ? currentCatObj.name : "앱 목록"}`;
+  // DOM 요소 삭제로 인한 통계 업데이트 로직 제거
+  // (dom.filteredAppsCount, dom.currentCategoryTitle 사용 안함)
 
   if (filtered.length === 0) {
     dom.appsLauncherGrid.innerHTML = `
@@ -585,24 +599,23 @@ function renderLauncher() {
     // Thumbnail fallback
     const thumbUrl = app.thumbnailUrl || "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&q=80";
 
+    const badgeName = store.categories.find(c => c.id === app.categoryId)?.name.replace(/[^가-힣]/g, '') || app.subject;
+
     card.innerHTML = `
       <div class="app-card-img-wrapper">
+        <span class="app-card-badge-floating">#${badgeName}</span>
         <img src="${thumbUrl}" alt="${app.title}" class="app-card-img" onerror="this.src='https://api.dicebear.com/7.x/identicon/svg?seed=${app.title}'">
         <button class="favorite-toggle ${app.favorite ? "active" : ""}" title="즐겨찾기">
           <i class="fa-${app.favorite ? 'solid' : 'regular'} fa-heart"></i>
         </button>
       </div>
       <div class="app-card-body">
-        <div class="app-card-meta">
-          <span class="badge primary">${app.subject}</span>
-          <span class="badge warning">${app.gradeLevels.map(g => g + '학년').join(', ')}</span>
-        </div>
         <h4 class="app-card-title">${app.title}</h4>
         <p class="app-card-desc">${app.description}</p>
-        <div class="app-card-footer">
-          <span class="app-duration"><i class="fa-regular fa-clock"></i> ${app.duration}</span>
-          <button class="btn-card-action">자세히 보기</button>
+        <div class="app-card-tags-modern">
+          ${app.tags.map(tag => `<span>#${tag}</span>`).join('')}
         </div>
+        <button class="btn-enter-garden">정원 입장하기 ➔</button>
       </div>
     `;
 

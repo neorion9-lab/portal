@@ -1947,3 +1947,157 @@ body.role-student .rec-chip {
     gap: 12px;
   }
 }
+
+/* ===== NEW GALLERY REDESIGN ===== */
+.gallery-header-section {
+  text-align: center;
+  padding: 40px 20px 20px;
+}
+
+.gallery-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #65a30d;
+  margin-bottom: 8px;
+}
+
+.gallery-subtitle {
+  font-size: 1rem;
+  color: #78716c;
+  font-weight: 500;
+}
+
+.gallery-nav-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.category-tab {
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 8px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  color: #78716c;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.category-tab.active {
+  background: linear-gradient(135deg, #84cc16 0%, #65a30d 100%);
+  color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(101, 163, 13, 0.3);
+}
+
+.category-tab:hover:not(.active) {
+  border-color: #84cc16;
+  color: #65a30d;
+}
+
+/* Redesigned App Card */
+.app-card {
+  border-radius: 16px;
+  border: none;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+  overflow: hidden;
+}
+
+.app-card-img-wrapper {
+  height: 180px;
+  border-radius: 16px 16px 0 0;
+}
+
+.app-card-badge-floating {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #65a30d;
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+.app-card-body {
+  padding: 20px;
+}
+
+.app-card-title {
+  color: #65a30d;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.app-card-desc {
+  font-size: 0.9rem;
+  color: #a8a29e;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.app-card-tags-modern {
+  font-size: 0.8rem;
+  color: #bef264; /* light green */
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.app-card-tags-modern span {
+  color: #84cc16;
+  margin-right: 6px;
+}
+
+.btn-enter-garden {
+  background: transparent;
+  border: none;
+  color: #65a30d;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.2s;
+}
+
+.btn-enter-garden:hover {
+  opacity: 0.7;
+}
+
+/* Floating Add App Button */
+.fab-add-app {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  font-size: 24px;
+  border: none;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.fab-add-app:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
